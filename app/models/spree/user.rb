@@ -9,7 +9,10 @@ module Spree
     devise :database_authenticatable, :registerable, :recoverable,
            :rememberable, :trackable, :validatable, :encryptable
     devise :confirmable if Spree::Auth::Config[:confirmable]
-    devise :omniauthable if Spree::Auth::Config[:omniauthable]
+    if Spree::Auth::Config[:omniauthable]
+      devise :omniauthable, omniauth_providers: Spree::Auth::Config[:omniauthable_providers]
+    end
+    
 
     acts_as_paranoid
     after_destroy :scramble_email_and_password
